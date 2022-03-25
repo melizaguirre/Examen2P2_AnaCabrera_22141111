@@ -8,9 +8,9 @@
  *
  * @author BAC
  */
-public class Gaseoso extends planeta {
+public class Terrestre extends planeta{
 
-    public Gaseoso(String nombre, int tam, int peso, int X, int Y) {
+    public Terrestre(String nombre, int tam, int peso, int X, int Y) {
         super(nombre, tam, peso, X, Y);
     }
     
