@@ -13,10 +13,10 @@ import java.util.ArrayList;
  * @author BAC
  */
 public class Cientifico implements Serializable{
-    protected String nombreCient;
-    protected ArrayList<planeta> planetas = new ArrayList();
+    private String nombreCient;
+    private  ArrayList<planeta> planetas;
 
-    private static final long SerialVersionUID= 777L;
+    
     public Cientifico(String nombreCient) {
         this.nombreCient = nombreCient;
     }
@@ -35,6 +35,11 @@ public class Cientifico implements Serializable{
 
     public void setPlanetas(ArrayList<planeta> planetas) {
         this.planetas = planetas;
+    }
+
+    @Override
+    public String toString() {
+        return nombreCient;
     }
     
     

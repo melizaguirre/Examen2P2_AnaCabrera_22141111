@@ -1,6 +1,7 @@
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -160,7 +161,7 @@ public class MainPlanetas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+   
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
@@ -171,29 +172,41 @@ public class MainPlanetas extends javax.swing.JFrame {
     }//GEN-LAST:event_tf_nombreActionPerformed
 
     private void addCientificoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addCientificoMouseClicked
-        // TODO add your handling code here:
-        String nombre = tf_nombre.getText();
-            Cientifico cientifico = new Cientifico(nombre);
-            listcientificos.add(cientifico);
-            JOptionPane.showMessageDialog(null, "Se ha creado el cientifico");
-            tf_nombre.setText(null);
+       String nombre = tf_nombre.getText();
+        tf_nombre.setText("");
+        if(nombre != null) {
+            listcientificos.add(new Cientifico(nombre));
             ActualizarCB_cientificos();
             guardarCientifico();
-         
+            JOptionPane.showMessageDialog(this, "Cientifico agregado");
+        } else JOptionPane.showMessageDialog(this, "Campo: Nombre Vacio!");
+           
     }//GEN-LAST:event_addCientificoMouseClicked
 
     private void cb_cientificosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_cientificosItemStateChanged
-        // TODO add your handling code here:
+        // TODO add your handling code  here:
        
     }//GEN-LAST:event_cb_cientificosItemStateChanged
 
     private void addCientificoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCientificoActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_addCientificoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void PlanetasPublicos() {
+        planetas.add(new Terrestre("Mercurio",5000,13000,400,300));
+        planetas.add(new Terrestre("Venus",100000,15000,640,260));
+        planetas.add(new Terrestre("Tierra",140000,17000,760,570));
+        planetas.add(new Terrestre("Marte",90000,12000,360,360));
+        planetas.add(new Gaseoso("Jupiter",400000,40000,340,310));
+        planetas.add(new Gaseoso("Saturno",300000,30000,560,450));
+        planetas.add(new Gaseoso("Urano",200000,20000,670,690));
+        planetas.add(new Gaseoso("Neptuno",200000,20000,840,900));
+        planetas.add(new Terrestre( "Planeta Vegetta",777777, 7777777, 777, 777));
+    }
+    
+    
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -235,25 +248,27 @@ public class MainPlanetas extends javax.swing.JFrame {
             modelo.addElement(c);
         }
       private void guardarCientifico(){
-        try{
-            ObjectOutputStream object = new ObjectOutputStream(new FileOutputStream("./cientificos"));
+     try{
+            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("./cientificos.planetas"));
             for (Cientifico cientifico : listcientificos)
-                object.writeObject(cientifico);
+                os.writeObject(cientifico);
         }catch(Exception ex){
             System.out.println(ex);
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error");
         }
     }
     
     private void cargarCientificos(){
-        try{
-            ObjectInputStream object = new ObjectInputStream(new FileInputStream("./cientificos"));
+       try{
+            ObjectInputStream os = new ObjectInputStream(new FileInputStream("./cientificos.planetas"));
             Cientifico cientifico;
-            while( (cientifico = (Cientifico)object.readObject()) != null )
+            while( (cientifico = (Cientifico)os.readObject()) != null )
                 listcientificos.add(cientifico);
         }catch(Exception ex){
             System.out.println(ex);
         }
+        
+           
+        
     }
 
         
@@ -276,5 +291,6 @@ public class MainPlanetas extends javax.swing.JFrame {
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
 ArrayList <Cientifico> listcientificos = new ArrayList ();
+ArrayList<planeta> planetas = new ArrayList<>();
 }
 
