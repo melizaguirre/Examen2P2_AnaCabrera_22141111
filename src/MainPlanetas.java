@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -41,7 +43,7 @@ public class MainPlanetas extends javax.swing.JFrame {
         jProgressBar1 = new javax.swing.JProgressBar();
         jProgressBar2 = new javax.swing.JProgressBar();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        TreePlanetas = new javax.swing.JTree();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         btnColisionar = new javax.swing.JButton();
@@ -55,8 +57,8 @@ public class MainPlanetas extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Planetas");
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jScrollPane1.setViewportView(jTree1);
+        TreePlanetas.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jScrollPane1.setViewportView(TreePlanetas);
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,6 +83,11 @@ public class MainPlanetas extends javax.swing.JFrame {
                 cb_cientificosItemStateChanged(evt);
             }
         });
+        cb_cientificos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_cientificosActionPerformed(evt);
+            }
+        });
 
         addCientifico.setText("Añadir Cientifico");
         addCientifico.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -95,6 +102,11 @@ public class MainPlanetas extends javax.swing.JFrame {
         });
 
         jCheckBox1.setText("Publicos");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,12 +197,34 @@ public class MainPlanetas extends javax.swing.JFrame {
 
     private void cb_cientificosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_cientificosItemStateChanged
         // TODO add your handling code  here:
-       
+        if(evt.getStateChange() == 2){
+            ArbolCientificos();
+        }
+        if (jCheckBox1.isSelected()){
+            jCheckBox1.setSelected(false);
+        }
     }//GEN-LAST:event_cb_cientificosItemStateChanged
 
     private void addCientificoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCientificoActionPerformed
 
     }//GEN-LAST:event_addCientificoActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+        DefaultTreeModel model = (DefaultTreeModel) TreePlanetas.getModel();
+        DefaultMutableTreeNode ruta = new DefaultMutableTreeNode("Planetas");
+        
+        for (planeta pla : planetas) {
+            DefaultMutableTreeNode NodoPlaneta = new DefaultMutableTreeNode(pla.getNombre());
+            ruta.add(NodoPlaneta);
+        }
+        model.setRoot(ruta);
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void cb_cientificosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_cientificosActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cb_cientificosActionPerformed
 
     private void PlanetasPublicos() {
         planetas.add(new Terrestre("Mercurio",5000,13000,400,300));
@@ -239,6 +273,23 @@ public class MainPlanetas extends javax.swing.JFrame {
             }
         });
     }
+    public void ArbolCientificos(){
+        try{
+            Cientifico cientifico = (Cientifico) cb_cientificos.getSelectedItem();
+
+            DefaultTreeModel modelo = (DefaultTreeModel)TreePlanetas.getModel();
+            DefaultMutableTreeNode ruta = new DefaultMutableTreeNode("Planetas");
+            ruta.removeAllChildren();
+            for (planeta planeta : cientifico.getPlanetas()){
+                DefaultMutableTreeNode nodoPlaneta = new DefaultMutableTreeNode(planeta);
+                ruta.add(nodoPlaneta);
+            }
+
+            modelo.setRoot(ruta);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "El cientifico no tiene planetas");
+        }
+    }
     
     private void ActualizarCB_cientificos (){
        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_cientificos.getModel();
@@ -276,6 +327,7 @@ public class MainPlanetas extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTree TreePlanetas;
     private javax.swing.JButton addCientifico;
     private javax.swing.JButton btnColisionar;
     private javax.swing.JComboBox<String> cb_cientificos;
@@ -287,7 +339,6 @@ public class MainPlanetas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTree jTree1;
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
 ArrayList <Cientifico> listcientificos = new ArrayList ();
