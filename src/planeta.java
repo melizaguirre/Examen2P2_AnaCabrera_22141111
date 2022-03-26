@@ -68,9 +68,10 @@ public class planeta implements Serializable {
 
     @Override
     public String toString() {
-        return "planeta{" + "nombre=" + nombre + ", tam=" + tam + ", peso=" + peso + ", X=" + X + ", Y=" + Y + '}';
+        return "planeta{" + "nombre=" + nombre + '}';
     }
-    
+
+  
     
     
     

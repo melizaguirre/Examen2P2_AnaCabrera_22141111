@@ -1,4 +1,10 @@
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /*
@@ -18,6 +24,8 @@ public class MainPlanetas extends javax.swing.JFrame {
      */
     public MainPlanetas() {
         initComponents();
+        cargarCientificos();
+        ActualizarCB_cientificos();
     }
 
     /**
@@ -164,20 +172,19 @@ public class MainPlanetas extends javax.swing.JFrame {
 
     private void addCientificoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addCientificoMouseClicked
         // TODO add your handling code here:
-         Cientifico c = new Cientifico(tf_nombre.getText ());
-        listaCientificos lc= new listaCientificos ("./cientificos.cbm");
-        lc.cargarArchivo();
-        lc.setCientifico(c);
-        JOptionPane.showMessageDialog(this, "Cientifico guardado");
-        tf_nombre.setText("");
+        String nombre = tf_nombre.getText();
+            Cientifico cientifico = new Cientifico(nombre);
+            listcientificos.add(cientifico);
+            JOptionPane.showMessageDialog(null, "Se ha creado el cientifico");
+            tf_nombre.setText(null);
+            ActualizarCB_cientificos();
+            guardarCientifico();
+         
     }//GEN-LAST:event_addCientificoMouseClicked
 
     private void cb_cientificosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_cientificosItemStateChanged
         // TODO add your handling code here:
-        Cientifico temp = (Cientifico) cb_cientificos.getSelectedItem();
-        if (temp !=null){
-            tf_nombre.setText(temp.getNombreCient());
-        }
+       
     }//GEN-LAST:event_cb_cientificosItemStateChanged
 
     private void addCientificoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCientificoActionPerformed
@@ -215,9 +222,43 @@ public class MainPlanetas extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainPlanetas().setVisible(true);
+                
             }
         });
     }
+    
+    private void ActualizarCB_cientificos (){
+       DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_cientificos.getModel();
+        modelo.removeAllElements();
+        
+        for(Cientifico c : listcientificos)
+            modelo.addElement(c);
+        }
+      private void guardarCientifico(){
+        try{
+            ObjectOutputStream object = new ObjectOutputStream(new FileOutputStream("./cientificos"));
+            for (Cientifico cientifico : listcientificos)
+                object.writeObject(cientifico);
+        }catch(Exception ex){
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error");
+        }
+    }
+    
+    private void cargarCientificos(){
+        try{
+            ObjectInputStream object = new ObjectInputStream(new FileInputStream("./cientificos"));
+            Cientifico cientifico;
+            while( (cientifico = (Cientifico)object.readObject()) != null )
+                listcientificos.add(cientifico);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+        
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCientifico;
@@ -234,4 +275,6 @@ public class MainPlanetas extends javax.swing.JFrame {
     private javax.swing.JTree jTree1;
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
+ArrayList <Cientifico> listcientificos = new ArrayList ();
 }
+
